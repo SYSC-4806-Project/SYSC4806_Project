@@ -23,20 +23,19 @@ async function run() {
       const query = { test: 'test' };
       const survey = await surveys.findOne(query);
       console.log(survey);
-
-      return survey 
+      return survey.test
     } finally {
       // Ensures that the client will close when you finish/error
       await client.close();
     }
   }
-run();
+
 //create enpoints for API we will use to request information
 //From backend
 //req = request, res = response
 app.get("/testDatabase/", async (req, res) => {
-    let response = run().catch(console.dir)      
-    res.json({response: "server response"});
+    let response = await run().catch(console.dir)      
+    res.json({response: response});
 });
 
 app.get('*', (req, res) => {

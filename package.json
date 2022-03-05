@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/index.js"
+    "start": "node server/index.js",
+    "build": "cd client && npm install && npm run build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/markocodes/SYSC4806_Project.git",
-    "build": "cd client && npm install && npm run build"
+    
   },
   "keywords": [],
   "author": "",

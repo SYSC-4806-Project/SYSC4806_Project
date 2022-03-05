@@ -38,8 +38,9 @@ app.get("/testDatabase/", async (req, res) => {
     res.json({response: response});
 });
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+//return the react application
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
  
 app.listen(port, () => {

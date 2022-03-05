@@ -38,9 +38,9 @@ app.get("/testDatabase/", async (req, res) => {
     res.json({response: response});
 });
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(publicPath, 'index.html'));
- });
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
  
 app.listen(port, () => {
    console.log(`Server is up on port ${port}!`);

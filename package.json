@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Tests TBA\""
+    "test": "echo \"Error: no test specified\"",
     "start": "node server/index.js",
     "build": "cd client && npm install && npm run build"
   },

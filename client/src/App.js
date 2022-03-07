@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import CustomNavbar from "./components/Navbar/Navbar"
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
+import MainRouter from "./components/MainRouter"
 
 
 function App() {
@@ -29,17 +28,7 @@ function App() {
   return (
     <div className="App">
       < CustomNavbar />
-      <div>
-        <br></br>
-        <h1>Welcome to Mini Survey Monkey!</h1>
-      </div>
-      <div className="homeButtons">
-        <Stack style={{display: "contents" }} spacing={2} direction="row">
-          <Button variant="contained">Create Survey</Button>
-          <Button variant="outlined">See Surveys</Button>
-        </Stack>
-      </div>
-
+      < MainRouter />
     </div>
   );
 }

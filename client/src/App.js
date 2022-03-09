@@ -12,18 +12,19 @@ function App() {
 
   useEffect(
     () => {
-      //configure endpoint info
-      let config = { method: 'post', url: '/addResponses/' }
+      //post exmaple
+      // //configure endpoint info
+      // let config = { method: 'post', url: '/addResponses/' }
 
-      //call api amd save result to variable
-      axios(config)
-        .then(function (response) {
+      // //call api amd save result to variable
+      // axios(config)
+      //   .then(function (response) {
 
-          console.log("response", response)
-        })
-        .catch(function (error) {
-          console.log("error", error);
-        });
+      //     console.log("response", response)
+      //   })
+      //   .catch(function (error) {
+      //     console.log("error", error);
+      //   });
     }
   )
   return (

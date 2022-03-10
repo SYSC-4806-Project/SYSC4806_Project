@@ -5,6 +5,8 @@ const app = express();
 const port = process.env.PORT || 3001;
 const publicPath = path.join(__dirname, '..', 'public');
 const bodyParser = require("body-parser");
+const mongoose = require('mongoose');
+const Question = require('./models/question');
 
  
 // Have Node serve the files for our built React app
@@ -19,6 +21,9 @@ app.use(bodyParser.json());
 const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.MONGODB_CONNECTION_STRING ; // replace with url string for local developlment
 const client = new MongoClient(uri);
+// mongoose.connect(uri, {useNewUrlParser:true, useUnifiedTopology:true})
+// .then((result) => console.log('connected to db'))
+// .catch((err)=> console.log(err));
 
 async function run() {
     try {

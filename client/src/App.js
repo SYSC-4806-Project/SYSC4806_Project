@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import CustomNavbar from "./components/Navbar/Navbar"
 import MainRouter from "./components/MainRouter"
+import { ContentPasteSearchOutlined } from '@mui/icons-material';
 
 
 function App() {
@@ -11,18 +12,19 @@ function App() {
 
   useEffect(
     () => {
-      //configure endpoint info
-      let config = { method: 'get', url: '/testDatabase/' }
+      //post exmaple
+      // //configure endpoint info
+      // let config = { method: 'post', url: '/addResponses/' }
 
-      //call api amd save result to variable
-      axios(config)
-        .then(function (response) {
+      // //call api amd save result to variable
+      // axios(config)
+      //   .then(function (response) {
 
-          setData(response.data.response)
-        })
-        .catch(function (error) {
-          console.log("error", error);
-        });
+      //     console.log("response", response)
+      //   })
+      //   .catch(function (error) {
+      //     console.log("error", error);
+      //   });
     }
   )
   return (

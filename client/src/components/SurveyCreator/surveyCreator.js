@@ -29,6 +29,8 @@ const SurveyCreator = () => {
     const [rangeQuestions, setRangeQuestions] = useState([])
     const [multipleQuestions, setMultipleQuestions] = useState([])
 
+    let axios = require('axios')
+
     function handleTextOpen(){
         if(!textOpen){setTextOpen(true)}
     }
@@ -66,8 +68,17 @@ const SurveyCreator = () => {
         }
     }
 
-    function handleCreateSurvey(){
-        //CALL API HERE
+    async function handleCreateSurvey(){
+        let questionsArr = []
+        textQuestions.forEach(element => questionsArr.push(element))
+        rangeQuestions.forEach(element => questionsArr.push(element))
+        multipleQuestions.forEach(element => questionsArr.push(element))
+
+        let idNum = Math.floor(Math.random() * 9000)
+
+        let surveyObject = {id: idNum, questions: questionsArr}
+
+        await axios.post("/addSurvey", surveyObject)
     }
 
     let textQuestionComponents = <Typography>No questions added yet. Use the toolbar on the left ao add some!</Typography>

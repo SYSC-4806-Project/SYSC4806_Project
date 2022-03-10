@@ -47,13 +47,13 @@ const AddQuestionDialog = (props) => {
         let questionObject = {}
 
         if(type === 'text'){
-            questionObject = {question: question}
+            questionObject = {question: question, type: 1}
         }
         else if(type === 'range'){
-            questionObject = {question: question, min: min, max: max}
+            questionObject = {question: question, min: min, max: max, type: 3}
         }
         else if(type === 'multiple'){
-            questionObject= {question: question, answers: answers}
+            questionObject= {question: question, answers: answers, type: 2}
         }
         handleSubmit(type, questionObject)
         handlePreClose()

@@ -11,7 +11,7 @@ Amith Kumar Das Orko 101126245
 
 ## Links
 
-Deployed App: https://mini-surveymonkey.herokuapp.com/
+Deployed App: https://mini-surveymonkey.herokuapp.com/ \
 CircleCi: https://app.circleci.com/pipelines/github/SYSC-4806-Project/SYSC4806_Project/35/workflows/6dddec6a-da92-438a-844c-9262283fe742/jobs/40
 
 ## Available Scripts

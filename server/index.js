@@ -5,6 +5,8 @@ const app = express();
 const port = process.env.PORT || 3001;
 const publicPath = path.join(__dirname, '..', 'public');
 const bodyParser = require("body-parser");
+const mongoose = require('mongoose');
+
 
  
 // Have Node serve the files for our built React app
@@ -19,6 +21,7 @@ app.use(bodyParser.json());
 const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.MONGODB_CONNECTION_STRING ; // replace with url string for local developlment
 const client = new MongoClient(uri);
+
 
 async function run() {
     try {
@@ -68,6 +71,30 @@ app.post("/addResponses", async (req, res) => {
       });
   });
 });
+
+
+
+async function getSurveys(){
+  try{
+    await client.connect();
+      const database = await client.db('test_surveys');
+      const surveys = await database.collection('surveys')
+      const survey = await surveys.find({}).toArray();
+      return survey
+  }finally{
+    //ensure that client will close when you finish/error
+    await client.close();
+  }
+}
+//create enpoints for API we will use to request information
+//From backend
+//req = request, res = response
+app.get("/surveys/", async (req, res) => {
+  let response = await getSurveys().catch(console.dir)      
+  res.json({response: response});
+});
+
+
 
 // POST newly created survey to database
 app.post("/addSurvey", async (req, res) => {

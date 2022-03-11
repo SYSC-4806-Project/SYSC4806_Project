@@ -106,6 +106,27 @@ app.get('/add-question', (req, res) => {
     });
 });
 
+async function getSurveys(){
+  try{
+    await client.connect();
+      const database = await client.db('test_surveys');
+      const surveys = await database.collection('surveys')
+      const survey = await surveys.find({}).toArray();
+      return survey
+  }finally{
+    //ensure that client will close when you finish/error
+    await client.close();
+  }
+}
+//create enpoints for API we will use to request information
+//From backend
+//req = request, res = response
+app.get("/surveys/", async (req, res) => {
+  let response = await getSurveys().catch(console.dir)      
+  res.json({response: response});
+});
+
+
 app.get('/all-questions', (req, res) => {
   Question.find()
     .then(result => {

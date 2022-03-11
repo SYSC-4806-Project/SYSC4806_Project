@@ -28,4 +28,4 @@ You may also see any lint errors in the console.
 3. Now, the project website will pop up.
 4. You can create survey by cliking the button "create survey".
 5. after you create surveys, you can go back to the main page, then select the button "view surveys".
-6. the last survey in the bottom is the lattest created survey. 
+6. the last survey in the bottom is the latest created survey. 

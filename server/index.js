@@ -25,6 +25,21 @@ const client = new MongoClient(uri);
 // .then((result) => console.log('connected to db'))
 // .catch((err)=> console.log(err));
 
+app.get('/', (req, res) => {
+  res.redirect('/questions');
+});
+
+
+app.get('/questions', (req, res) => {
+  Question.find().sort({ createdAt: -1 })
+    .then(result => {
+      res.render('index', { questions: result });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+
 async function run() {
     try {
       await client.connect();
@@ -72,6 +87,33 @@ app.post("/addResponses", async (req, res) => {
         db.close();
       });
   });
+});
+
+// mongoose & mongo tests
+app.get('/add-question', (req, res) => {
+  const question = new Question({
+    id: 22,
+    question: 'smaple q',
+    answers: 'smaple a'
+  })
+
+  question.save()
+    .then(result => {
+      res.send(result);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+
+app.get('/all-questions', (req, res) => {
+  Question.find()
+    .then(result => {
+      res.send(result);
+    })
+    .catch(err => {
+      console.log(err);
+    });
 });
 
 // POST newly created survey to database

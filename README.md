@@ -1,4 +1,5 @@
-# SYSC4806_Project
+# SYSC4806_Project - Mini Survey Monkey
+The Mini Survey Application, is meant to mimick the Survey Monkey application by allowing users to create surveys, and have other users fill them out.
 
 This project is done by:
 

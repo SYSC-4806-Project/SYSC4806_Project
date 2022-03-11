@@ -6,7 +6,7 @@ const port = process.env.PORT || 3001;
 const publicPath = path.join(__dirname, '..', 'public');
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
-const Question = require('./models/question');
+
 
  
 // Have Node serve the files for our built React app
@@ -21,24 +21,7 @@ app.use(bodyParser.json());
 const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.MONGODB_CONNECTION_STRING ; // replace with url string for local developlment
 const client = new MongoClient(uri);
-// mongoose.connect(uri, {useNewUrlParser:true, useUnifiedTopology:true})
-// .then((result) => console.log('connected to db'))
-// .catch((err)=> console.log(err));
 
-app.get('/', (req, res) => {
-  res.redirect('/questions');
-});
-
-
-app.get('/questions', (req, res) => {
-  Question.find().sort({ createdAt: -1 })
-    .then(result => {
-      res.render('index', { questions: result });
-    })
-    .catch(err => {
-      console.log(err);
-    });
-});
 
 async function run() {
     try {
@@ -89,22 +72,7 @@ app.post("/addResponses", async (req, res) => {
   });
 });
 
-// mongoose & mongo tests
-app.get('/add-question', (req, res) => {
-  const question = new Question({
-    id: 22,
-    question: 'smaple q',
-    answers: 'smaple a'
-  })
 
-  question.save()
-    .then(result => {
-      res.send(result);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-});
 
 async function getSurveys(){
   try{
@@ -127,15 +95,6 @@ app.get("/surveys/", async (req, res) => {
 });
 
 
-app.get('/all-questions', (req, res) => {
-  Question.find()
-    .then(result => {
-      res.send(result);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-});
 
 // POST newly created survey to database
 app.post("/addSurvey", async (req, res) => {

@@ -13,18 +13,7 @@ Amith Kumar Das Orko 101126245
 
 Deployed App: https://mini-surveymonkey.herokuapp.com/ \
 CircleCi: https://app.circleci.com/pipelines/github/SYSC-4806-Project/SYSC4806_Project/35/workflows/6dddec6a-da92-438a-844c-9262283fe742/jobs/40 \
-Repository: https://github.com/SYSC-4806-Project/SYSC4806_Project
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Repository: https://github.com/SYSC-4806-Project/SYSC4806_Project:
 
 ### Process to test the project
 

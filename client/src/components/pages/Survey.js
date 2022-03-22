@@ -36,11 +36,13 @@ const Survey = () => {
     }
 
     async function handleSubmitSurvey(){
+        delete survey._id
+        console.log(survey)
+
         survey.questions.map((obj,i)=>{
             obj["response"]= response[i]})
 
         const res = await axios.post("/addResponses", survey)
-        console.log(res)
     }
     
     let questionComponents= survey.questions.map((obj,i)=>{

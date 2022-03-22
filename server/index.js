@@ -40,6 +40,25 @@ app.post("/addResponses", async (req, res) => {
   });
 });
 
+async function getResponses(){
+  try{
+    await client.connect();    
+      const database = await client.db('test_surveys');
+      const surveys = await database.collection('survey_responses')
+      const survey = await surveys.find({}).toArray();
+      return survey
+  }finally{
+    //ensure that client will close when you finish/error
+    await client.close();
+  }
+}
+//create enpoints for API we will use to request information
+//From backend
+//req = request, res = response
+app.get("/responses", async (req, res) => {
+  let response = await getResponses().catch(console.dir)      
+  res.json({response: response});
+});
 
 async function getSurveys(){
   try{
@@ -61,8 +80,6 @@ app.get("/surveys/", async (req, res) => {
   res.json({response: response});
 });
 
-
-
 // POST newly created survey to database
 app.post("/addSurvey", async (req, res) => {
   MongoClient.connect(uri, function (err, db) {
@@ -79,7 +96,6 @@ app.post("/addSurvey", async (req, res) => {
   });
 });
 
-
 //return the react application
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
@@ -88,5 +104,3 @@ app.get('*', (req, res) => {
 app.listen(port, () => {
  console.log(`Server is up on port ${port}!`);
 });
-
-

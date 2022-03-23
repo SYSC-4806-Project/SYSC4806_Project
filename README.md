@@ -3,15 +3,15 @@ The Mini Survey Application, is meant to mimick the Survey Monkey application by
 
 ### This project is done by:
 
-Emmitt Luhning 101113502
+Emmitt Luhning
 
-Marko Majkic 101109409
+Marko Majkic
 
-Defa Hu 101038610
+Defa Hu
 
-Josh Downing 101077691
+Josh Downing
 
-Amith Kumar Das Orko 101126245
+Amith Kumar Das Orko
 
 ## Links
 

@@ -22,7 +22,11 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.MONGODB_CONNECTION_STRING ; // replace with url string for local developlment
 const client = new MongoClient(uri);
 
-
+//api endpoint called to search 
+app.get("/search/:searchterm-:searchtype", async (req, res) => {
+  const message = await search(req.params.searchterm, req.params.searchtype); 
+  res.json({status: message})
+})
 
 // POST survey responses to database
 app.post("/addResponses", async (req, res) => {
@@ -39,6 +43,30 @@ app.post("/addResponses", async (req, res) => {
       });
   });
 });
+
+async function search(search, type){
+  try{
+      await client.connect();
+      const database = await client.db('test_surveys');
+      const surveys = await database.collection('surveys')
+      var query = ""
+      if(type == "id"){
+          query = {id: Number(search)};
+      }
+      else if(type == "username"){
+        query = {id: search};
+      }
+      else if(type == "title"){
+        query = {id: search};
+      }
+    
+      const survey = await surveys.find(query).toArray();
+      return survey
+  }finally{
+      //ensure that client will close when you finish/error
+      await client.close();
+  }
+}
 
 
 async function getSurveys(){

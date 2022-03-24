@@ -79,6 +79,24 @@ app.post("/addSurvey", async (req, res) => {
   });
 });
 
+// POST new users to database
+app.post("/addUser", async (req, res) => {
+  MongoClient.connect(uri, function (err, db) {
+    if (err)
+      throw err;
+    var dbo = db.db("Users");
+    dbo.collection("Users").insertOne(req.body,
+      function (err, result) {
+        if (err)
+          throw err;
+        res.json(result);
+        db.close();
+      });
+  });
+});
+
+
+
 
 //return the react application
 app.get('*', (req, res) => {

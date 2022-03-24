@@ -53,11 +53,51 @@ async function getSurveys(){
     await client.close();
   }
 }
+
+async function authUser(uName, pWord){
+  try{
+    await client.connect();
+      const database = await client.db('Users');
+      const users = await database.collection('Users')
+      const user = await users.find({
+        $and: [ 
+          {username: uName},
+          {password: pWord}
+        ]
+      }).toArray()
+      if(user.length == 1){
+        return 1
+      } else {
+        return 0
+      }
+
+  }finally{
+    //ensure that client will close when you finish/error
+    await client.close();
+  }
+}
+
 //create enpoints for API we will use to request information
 //From backend
 //req = request, res = response
 app.get("/surveys/", async (req, res) => {
   let response = await getSurveys().catch(console.dir)      
+  res.json({response: response});
+});
+
+
+// Make request to authenticate user
+app.get("/userAuth", async (req, res) => {
+  username = req.body.username
+  password = req.body.password
+  let response
+
+  if(authUser(username, password == 1)){
+     response = "Approved"
+  } else{
+    response = "Denied"
+  }
+  
   res.json({response: response});
 });
 
@@ -96,8 +136,6 @@ app.post("/addUser", async (req, res) => {
 });
 
 
-
-
 //return the react application
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
@@ -106,5 +144,3 @@ app.get('*', (req, res) => {
 app.listen(port, () => {
  console.log(`Server is up on port ${port}!`);
 });
-
-

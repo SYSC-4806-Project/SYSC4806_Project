@@ -92,7 +92,7 @@ app.get("/userAuth", async (req, res) => {
   password = req.body.password
   let response
 
-  if(authUser(username, password == 1)){
+  if(authUser(username, password) == 1){
      response = "Approved"
   } else{
     response = "Denied"

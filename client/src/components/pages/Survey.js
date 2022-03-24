@@ -36,8 +36,11 @@ const Survey = () => {
     }
 
     async function handleSubmitSurvey(){
+        let user = sessionStorage.getItem("logged_in_user")
         survey.questions.map((obj,i)=>{
-            obj["response"]= response[i]})
+            obj["response"]= response[i]
+            obj["username"] = user
+        })
 
         const res = await axios.post("/addResponses", survey)
         console.log(res)

@@ -106,16 +106,18 @@ async function authUser(uName, pWord){
     await client.connect();
       const database = await client.db('Users');
       const users = await database.collection('Users')
+
       const user = await users.find({
         $and: [ 
           {username: uName},
           {password: pWord}
         ]
       }).toArray()
+
       if(user.length == 1){
-        return 1
+        return true
       } else {
-        return 0
+        return false
       }
 
   }finally{
@@ -133,12 +135,13 @@ app.get("/surveys/", async (req, res) => {
 });
 
 // Make request to authenticate user
-app.get("/userAuth", async (req, res) => {
-  username = req.body.username
-  password = req.body.password
+app.get("/userAuth/:username-:password", async (req, res) => {
+  username = req.params.username
+  password = req.params.password
+
   let response
 
-  if(authUser(username, password) == 1){
+  if(await authUser(username, password) == 1){
      response = "Approved"
   } else{
     response = "Denied"

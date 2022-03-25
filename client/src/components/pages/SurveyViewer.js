@@ -44,13 +44,15 @@ const SurveyViewer = () => {
       const Search = () => {
          //configure endpoint info
          let config = {method: 'get', url: '/search/' + searchTerm + "-" + value}
-        
+         console.log("term", searchTerm)
+         console.log("value", value)
          let reply
          //call api amd save result to variable
          axios(config)
          .then(function (response) {
              reply = (response.data);
              setSurveys(reply.status); 
+             console.log(reply.status)
          })
          .catch(function (error) {
              console.log("error", error);

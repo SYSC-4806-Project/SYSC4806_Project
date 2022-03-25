@@ -74,10 +74,11 @@ async function search(search, type){
           query = {id: Number(search)};
       }
       else if(type == "username"){
-        query = {id: search};
+        console.log("type", type)
+        query = {username: search.toString()};
       }
       else if(type == "title"){
-        query = {id: search};
+        query = {title: search};
       }
     
       const survey = await surveys.find(query).toArray();

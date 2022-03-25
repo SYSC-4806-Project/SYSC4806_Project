@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import { Link } from "react-router-dom";
 import SignupDialog from "./account/SignupDialog";
 import LoginDialog from "./account/LoginDialog";
+import Grid from '@mui/material/Grid'
 
 const Home = () => {
 
@@ -24,19 +25,20 @@ const Home = () => {
                 <Link to="/surveys">
                     <Button variant="outlined">See Surveys</Button>
                 </Link>
-
-                <div className="App">
-                    <Button variant="contained" color="primary" onClick={() => {setSignupOpen(true)}}>
-                        Signup
-                    </Button>
-                    <SignupDialog open={SignupOpen} handleClose={() => {setSignupOpen(false)}} />
-                </div>
-                <div className="App">
-                    <Button variant="contained" color="primary" onClick={() => {setLoginOpen(true)}}>
-                        Login
-                    </Button>
-                    <LoginDialog open={LoginOpen} handleClose={() => {setLoginOpen(false)}} />
-                </div>
+                <Grid container style={{marginTop: 15}}  justifyContent='center'>
+                    <Grid item>
+                        <Button variant="contained" color="primary" onClick={() => {setSignupOpen(true)}}>
+                            Signup
+                        </Button>
+                        <SignupDialog open={SignupOpen} handleClose={() => {setSignupOpen(false)}} />
+                    </Grid>
+                    <Grid item>
+                        <Button variant="contained" color="primary" onClick={() => {setLoginOpen(true)}}>
+                            Login
+                        </Button>
+                        <LoginDialog open={LoginOpen} handleClose={() => {setLoginOpen(false)}} />
+                    </Grid>
+                </Grid>
                 </Stack>
             </div>
         </div>

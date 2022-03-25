@@ -25,7 +25,7 @@ const SurveyViewer = () => {
 
       useEffect(() => {
           axios.get("/surveys").then(response => {
-            setSurveys(response.data.response);
+            setSurveys(response.data.response.reverse());
             setLoading(false);
           });
       }, []);
@@ -51,7 +51,7 @@ const SurveyViewer = () => {
          axios(config)
          .then(function (response) {
              reply = (response.data);
-             setSurveys(reply.status); 
+             setSurveys(reply.status.reverse()); 
              console.log(reply.status)
          })
          .catch(function (error) {
@@ -98,7 +98,7 @@ const SurveyViewer = () => {
                 <Grid item xs={4} key={i}>
                   <Card>
                     <CardHeader
-                      title={`Survey ${elem.id}`}                      
+                      title={`Survey ${elem.title}`} subheader={`Survey ${elem.id}`}                      
                     />
                     <CardContent>
                     <Link to={{pathname:`/surveys/${elem.id}`, query: {elem}}} >

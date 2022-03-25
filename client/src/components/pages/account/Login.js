@@ -33,6 +33,8 @@ const Login = ({handleClose}) => {
         axios.get("/userAuth/" + userName + "-" + password).then(response => {
             if (response.data.response === "Approved") {
                 sessionStorage.setItem('logged_in_user', userName)
+                        //redirect to staff page
+                        document.location.href = '/Home'
             } else if (response.data.response === "Denied") {
                 console.log("fail to authenticate")
             }

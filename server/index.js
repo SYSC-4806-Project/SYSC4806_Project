@@ -132,9 +132,6 @@ app.get("/surveys/", async (req, res) => {
   res.json({response: response});
 });
 
-<<<<<<< HEAD
-=======
-
 // Make request to authenticate user
 app.get("/userAuth", async (req, res) => {
   username = req.body.username
@@ -150,9 +147,6 @@ app.get("/userAuth", async (req, res) => {
   res.json({response: response});
 });
 
-
-
->>>>>>> main
 // POST newly created survey to database
 app.post("/addSurvey", async (req, res) => {
   MongoClient.connect(uri, function (err, db) {
@@ -169,8 +163,6 @@ app.post("/addSurvey", async (req, res) => {
   });
 });
 
-<<<<<<< HEAD
-=======
 // POST new users to database
 app.post("/addUser", async (req, res) => {
   MongoClient.connect(uri, function (err, db) {
@@ -188,7 +180,6 @@ app.post("/addUser", async (req, res) => {
 });
 
 
->>>>>>> main
 //return the react application
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
@@ -196,8 +187,5 @@ app.get('*', (req, res) => {
 
 app.listen(port, () => {
  console.log(`Server is up on port ${port}!`);
-<<<<<<< HEAD
 });
-=======
-});
->>>>>>> main
+

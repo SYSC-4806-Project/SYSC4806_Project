@@ -19,6 +19,15 @@ Deployed App: https://mini-surveymonkey.herokuapp.com/ \
 CircleCi: https://app.circleci.com/pipelines/github/SYSC-4806-Project/SYSC4806_Project/35/workflows/6dddec6a-da92-438a-844c-9262283fe742/jobs/40 \
 Repository: https://github.com/SYSC-4806-Project/SYSC4806_Project:
 
+
+### Plan for upcoming sprint:
+* Seperating user privileges, meaning survey owners can decide if all users can see responses or just themselves.
+* Adding a profile page where users can see their own surveys and profile info.
+* Adding feedback for user actions like registration and survey creation.
+* Small addtions: Home button from each page, Logging out, Creating static pages for navbar items
+* Implementing unit tests
+
+
 ### Process to test the project
 
 1. Open a terminal, and run "npm install". then run "npm start" after install is done.

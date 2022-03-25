@@ -28,6 +28,7 @@ const SurveyCreator = () => {
     const [textQuestions, setTextQuestions] = useState([]) 
     const [rangeQuestions, setRangeQuestions] = useState([])
     const [multipleQuestions, setMultipleQuestions] = useState([])
+    const [title, setTitle] = useState("")
 
     let axios = require('axios')
 
@@ -40,7 +41,9 @@ const SurveyCreator = () => {
     function handleMultipleOpen(){
         if(!multipleOpen){setMultipleOpen(true)}
     }
-
+    function handleTitleChange(event){
+        setTitle(event.target.value)
+    }
     function handleTextClose(){
         setTextOpen(false)
     }
@@ -77,7 +80,7 @@ const SurveyCreator = () => {
         let idNum = Math.floor(Math.random() * 9000)
 
         let user = sessionStorage.getItem("logged_in_user")
-        let surveyObject = {id: idNum, questions: questionsArr, username: user}
+        let surveyObject = {id: idNum, questions: questionsArr, username: user, title: title}
 
         await axios.post("/addSurvey", surveyObject)
     }
@@ -189,6 +192,9 @@ const SurveyCreator = () => {
             </Grid>
             <Grid item xs={12} style={{ marginTop: 100}}>
                 <Grid container spacing={2} justifyContent='center'>
+                    <Grid item xs={12} style={{marginBottom: 30}}>
+                        <TextField label="title" onChange={handleTitleChange}></TextField>
+                    </Grid>
                     <Grid item xs={12}>
                         <Grid container spacing={3} justifyContent='center'>
                             {textQuestionComponents}

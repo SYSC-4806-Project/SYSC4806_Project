@@ -25,20 +25,6 @@ const Home = () => {
                 <Link to="/surveys">
                     <Button variant="outlined">See Surveys</Button>
                 </Link>
-                <Grid container style={{marginTop: 15}}  justifyContent='center'>
-                    <Grid item>
-                        <Button variant="contained" color="primary" onClick={() => {setSignupOpen(true)}}>
-                            Signup
-                        </Button>
-                        <SignupDialog open={SignupOpen} handleClose={() => {setSignupOpen(false)}} />
-                    </Grid>
-                    <Grid item>
-                        <Button variant="contained" color="primary" onClick={() => {setLoginOpen(true)}}>
-                            Login
-                        </Button>
-                        <LoginDialog open={LoginOpen} handleClose={() => {setLoginOpen(false)}} />
-                    </Grid>
-                </Grid>
                 </Stack>
             </div>
         </div>

@@ -102,6 +102,9 @@ const SurveyViewer = () => {
                     <Link to={{pathname:`/surveys/${elem.id}`, query: {elem}}} >
                         <Button  variant="contained">Fill out this survey</Button>
                     </Link>
+                    <Link to={{pathname:`/responses/${elem.id}`, query: {elem}}} >
+                        <Button  color="secondary" variant="contained">See responses</Button>
+                    </Link>
                     </CardContent>
                   </Card>
             </Grid>))}</>

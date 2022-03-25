@@ -82,7 +82,7 @@ const SurveyCreator = () => {
         await axios.post("/addSurvey", surveyObject)
     }
 
-    let textQuestionComponents = <Typography>No questions added yet. Use the toolbar on the left ao add some!</Typography>
+    let textQuestionComponents = <Typography>No questions added yet. Use the toolbar on the left to add some!</Typography>
     let rangeQuestionComponents = <></>
     let multipleQuestionComponents =<></>
 

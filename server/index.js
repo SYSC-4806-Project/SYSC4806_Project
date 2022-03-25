@@ -22,7 +22,11 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.MONGODB_CONNECTION_STRING ; // replace with url string for local developlment
 const client = new MongoClient(uri);
 
-
+//api endpoint called to search 
+app.get("/search/:searchterm-:searchtype", async (req, res) => {
+  const message = await search(req.params.searchterm, req.params.searchtype); 
+  res.json({status: message})
+})
 
 // POST survey responses to database
 app.post("/addResponses", async (req, res) => {
@@ -40,6 +44,49 @@ app.post("/addResponses", async (req, res) => {
   });
 });
 
+async function getResponses(){
+  try{
+    await client.connect();    
+      const database = await client.db('test_surveys');
+      const surveys = await database.collection('survey_responses')
+      const survey = await surveys.find({}).toArray();
+      return survey
+  }finally{
+    //ensure that client will close when you finish/error
+    await client.close();
+  }
+}
+//create enpoints for API we will use to request information
+//From backend
+//req = request, res = response
+app.get("/responses", async (req, res) => {
+  let response = await getResponses().catch(console.dir)      
+  res.json({response: response});
+});
+
+async function search(search, type){
+  try{
+      await client.connect();
+      const database = await client.db('test_surveys');
+      const surveys = await database.collection('surveys')
+      var query = ""
+      if(type == "id"){
+          query = {id: Number(search)};
+      }
+      else if(type == "username"){
+        query = {id: search};
+      }
+      else if(type == "title"){
+        query = {id: search};
+      }
+    
+      const survey = await surveys.find(query).toArray();
+      return survey
+  }finally{
+      //ensure that client will close when you finish/error
+      await client.close();
+  }
+}
 
 async function getSurveys(){
   try{
@@ -53,6 +100,32 @@ async function getSurveys(){
     await client.close();
   }
 }
+
+async function authUser(uName, pWord){
+  try{
+    await client.connect();
+      const database = await client.db('Users');
+      const users = await database.collection('Users')
+
+      const user = await users.find({
+        $and: [ 
+          {username: uName},
+          {password: pWord}
+        ]
+      }).toArray()
+
+      if(user.length == 1){
+        return true
+      } else {
+        return false
+      }
+
+  }finally{
+    //ensure that client will close when you finish/error
+    await client.close();
+  }
+}
+
 //create enpoints for API we will use to request information
 //From backend
 //req = request, res = response
@@ -61,7 +134,21 @@ app.get("/surveys/", async (req, res) => {
   res.json({response: response});
 });
 
+// Make request to authenticate user
+app.get("/userAuth/:username-:password", async (req, res) => {
+  username = req.params.username
+  password = req.params.password
 
+  let response
+
+  if(await authUser(username, password) == 1){
+     response = "Approved"
+  } else{
+    response = "Denied"
+  }
+  
+  res.json({response: response});
+});
 
 // POST newly created survey to database
 app.post("/addSurvey", async (req, res) => {
@@ -96,8 +183,6 @@ app.post("/addUser", async (req, res) => {
 });
 
 
-
-
 //return the react application
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
@@ -106,5 +191,4 @@ app.get('*', (req, res) => {
 app.listen(port, () => {
  console.log(`Server is up on port ${port}!`);
 });
-
 

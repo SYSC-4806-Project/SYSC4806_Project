@@ -111,7 +111,6 @@ const Response = () => {
       var histogramColor = "rgb(" + histogramR + "," + histogramG + "," + histogramB + ")";    
 
       let histograms = allRangeData.map(rangeDataArr=>{
-          console.log([...rangeDataArr[1]])
           let sortedMap = new Map([...rangeDataArr[1]].sort(function(a, b) {
             return a[0] - b[0];
           }))

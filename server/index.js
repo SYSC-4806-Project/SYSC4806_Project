@@ -5,8 +5,7 @@ const app = express();
 const port = process.env.PORT || 3001;
 const publicPath = path.join(__dirname, '..', 'public');
 const bodyParser = require("body-parser");
-
-
+const bcrypt = require('bcrypt');
 
  
 // Have Node serve the files for our built React app
@@ -108,15 +107,20 @@ async function authUser(uName, pWord){
       const database = await client.db('Users');
       const users = await database.collection('Users')
 
+
       const user = await users.find({
         $and: [ 
           {username: uName},
-          {password: pWord}
         ]
       }).toArray()
+      console.log(user); 
 
       if(user.length == 1){
-        return true
+        if (bcrypt.compareSync(pWord, user[0].password)) {
+          return true
+        } else {
+          return false
+        }
       } else {
         return false
       }
@@ -167,13 +171,19 @@ app.post("/addSurvey", async (req, res) => {
   });
 });
 
+
+
 // POST new users to database
 app.post("/addUser", async (req, res) => {
-  MongoClient.connect(uri, function (err, db) {
+  await MongoClient.connect(uri, async function (err, db) {
     if (err)
       throw err;
     var dbo = db.db("Users");
-    dbo.collection("Users").insertOne(req.body,
+
+    let hash = bcrypt.hashSync(req.body.password, 10);
+    secureUserJSON = {username: req.body.username, email: req.body.email, password: hash}
+
+    await dbo.collection("Users").insertOne(secureUserJSON,
       function (err, result) {
         if (err)
           throw err;

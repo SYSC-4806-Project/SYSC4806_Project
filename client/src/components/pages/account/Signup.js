@@ -32,7 +32,8 @@ const Signup = ({handleClose}) => {
     const handleSubmit = e => {
         e.preventDefault();
         console.log(userName, email, password);
-        let accountInfo = {username: userName, email: email, password: password};
+  
+        let accountInfo = {username: userName, email: email, password: password}
         axios.post("/addUser", accountInfo)
         handleClose();
     };

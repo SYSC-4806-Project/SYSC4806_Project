@@ -28,6 +28,35 @@ app.get("/search/:searchterm-:searchtype", async (req, res) => {
   res.json({status: message})
 })
 
+//api endpoint called to check if user exists 
+app.get("/userexist/:username", async (req, res) => {
+  let response
+  if(await checkUserExists(req.params.username) == 1){
+     response = "Approved"
+  } else{
+    response = "Denied"
+  }
+  
+  res.json({response: response});
+})
+
+//PATCH survey active status
+app.patch("/active/:id-:active", async (req,res) => {
+  MongoClient.connect(uri, function (err, db) {
+    if (err)
+      throw err;
+    var dbo = db.db("test_surveys");
+    dbo.collection("surveys").updateOne({"id":Number(req.params.id)},{$set: {"active":false}})
+    .then((obj) => {
+      console.log('Updated - ' + obj);
+     res.redirect('orders')
+})
+.catch((err) => {
+  console.log('Error: ' + err);
+}) })
+})
+
+
 // POST survey responses to database
 app.post("/addResponses", async (req, res) => {
   MongoClient.connect(uri, function (err, db) {
@@ -56,6 +85,7 @@ async function getResponses(){
     await client.close();
   }
 }
+
 //create enpoints for API we will use to request information
 //From backend
 //req = request, res = response
@@ -83,6 +113,27 @@ async function search(search, type){
     
       const survey = await surveys.find(query).toArray();
       return survey
+  }finally{
+      //ensure that client will close when you finish/error
+      await client.close();
+  }
+}
+
+async function checkUserExists(username){
+  try{
+      await client.connect();
+      const database = await client.db('Users');
+      const users = await database.collection('Users')
+    
+      const user = await users.find({
+          username: username 
+      }).toArray()
+      if(user.length == 1){
+        return true
+      } else {
+        return false
+      }
+      
   }finally{
       //ensure that client will close when you finish/error
       await client.close();
@@ -182,7 +233,6 @@ app.post("/addUser", async (req, res) => {
       });
   });
 });
-
 
 //return the react application
 app.get('*', (req, res) => {

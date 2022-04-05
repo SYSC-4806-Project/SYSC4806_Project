@@ -10,6 +10,8 @@ import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
 import axios from 'axios';
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { SettingsApplicationsRounded } from '@material-ui/icons'
 
 const Survey = () => {
     const [response, setResponse] = useState([])
@@ -18,29 +20,50 @@ const Survey = () => {
     const { id } = useParams();
 
     useEffect(() => {
-        axios.get("/surveys").then(response => {
-          setSurveys(response.data.response);
-          setLoading(false);
+        let config = {method: 'get', url: '/search/' + id + "-id"}
+        let reply
+        //call api amd save result to variable
+        axios(config)
+        .then(function (response) {
+            reply = (response.data);
+            setSurveys(reply.status.reverse());
+            setLoading(false);
+        })
+        .catch(function (error) {
+            console.log("error", error);
         });
-      }, []);
+        }, []);
 
     if (isLoading) {
         return <div className="App"  style={{padding:80}}>Loading...</div>;
       }
     
-    let survey = {}
-    for(let i = 0; i < surveys.length;i++){
-        if(surveys[i].id==id){
-            survey = surveys[i]
-        }
-    }
+    let survey = surveys[0];
 
+    if(!survey.active){
+        return (
+            <>
+        <div className="App"  style={{padding:80}}>This survey is no longer active. Please check out the results</div>
+            <Link to={{pathname:`/response/${survey.id}`}} >
+
+                <Button variant="contained">
+                    Results
+                </Button>
+            </Link>
+            <Link to={{pathname:`/surveys/`}} >
+
+            <Button variant="contained" color='secondary'>
+                Return to survey viewer
+            </Button>
+            </Link>
+        </>
+        )
+    }
+    
     async function handleSubmitSurvey(){
         let user = sessionStorage.getItem("logged_in_user")
 
         delete survey._id
-        console.log(survey)
-
         survey.questions.map((obj,i)=>{
             obj["response"]= response[i]
             obj["username"] = user

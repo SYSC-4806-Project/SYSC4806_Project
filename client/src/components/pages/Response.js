@@ -3,10 +3,14 @@ import Typography from '@mui/material/Typography'
 import axios from 'axios';
 import { useParams } from "react-router-dom";
 import { Pie , Bar} from "react-chartjs-2";
+import { Link } from "react-router-dom";
+import Button from '@mui/material/Button'
+
 import 'chart.js/auto';
 
 const Response = () => {
     const [isLoading, setLoading] = useState(true)
+    const [surveyResponses, setSurveyResponses] = useState({})
     const [surveys, setSurveys] = useState({})
     const { id } = useParams();
 
@@ -20,9 +24,12 @@ const Response = () => {
 
     useEffect(() => {
         axios.get("/responses").then(response => {
-          setSurveys(response.data.response);
-          setLoading(false);
-        });
+          setSurveyResponses(response.data.response);
+          return axios.get("/search/" + id + "-id")}).then(res => {
+            let reply = (res.data);
+            setSurveys(reply.status.reverse());
+            setLoading(false);
+        }).catch(error => console.log(error.response))
       }, []);
 
     if (isLoading) {
@@ -30,11 +37,30 @@ const Response = () => {
       }
     
     let surveyResponseArray = []
-    for(let i = 0; i < surveys.length;i++){
-        if(surveys[i].id==id){
-            surveyResponseArray.push(surveys[i])
+    let survey = surveys[0];
+    for(let i = 0; i < surveyResponses.length;i++){
+        if(surveyResponses[i].id==id){
+            surveyResponseArray.push(surveyResponses[i])
         }
+        
     }
+    if(survey.active){
+
+        return (<><div className="Active"  style={{padding:80}}>This survey is still active. Click the button below to fill it out or come back later to see the results!</div>
+                 <Link to={{pathname:`/surveys/${survey.id}`}} >
+
+                    <Button variant="contained">
+                        Fill out
+                    </Button>
+                </Link>
+                <Link to={{pathname:`/surveys/`}} >
+
+                <Button variant="contained" color='secondary'>
+                    Return to survey viewer
+                </Button>
+                </Link>
+                </>)
+    }  
 
     let questionMap = new Map();
 

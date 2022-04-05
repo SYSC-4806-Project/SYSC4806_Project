@@ -80,7 +80,8 @@ const SurveyCreator = () => {
         let idNum = Math.floor(Math.random() * 9000)
 
         let user = sessionStorage.getItem("logged_in_user")
-        let surveyObject = {id: idNum, questions: questionsArr, username: user, title: title}
+
+        let surveyObject = {id: idNum, questions: questionsArr, username: user, title: title, active:true}
 
         await axios.post("/addSurvey", surveyObject)
     }

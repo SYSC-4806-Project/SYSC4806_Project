@@ -11,6 +11,8 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import { Link } from "react-router-dom";
+
 
 const pages = ['Products', 'Pricing', 'Surveys'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -33,6 +35,42 @@ const ResponsiveAppBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  let user = sessionStorage.getItem("logged_in_user")
+
+
+  let settingsblock = settings.map((setting) => {
+    switch(setting){
+      case 'Profile':
+        if(user!==null){
+        return(
+          <Link to={{pathname:`/profiles/${user}`}} >
+          <MenuItem key={setting} onClick={handleCloseUserMenu}>
+            <Typography textAlign="center">{setting}</Typography> 
+          </MenuItem>
+          </Link>
+        )
+        }
+      case 'Account':
+        return(  
+          <MenuItem key={setting} onClick={handleCloseUserMenu}>
+            <Typography textAlign="center">{setting}</Typography> 
+          </MenuItem>
+        )
+      case 'Logout':
+        return(  
+          <MenuItem key={setting} onClick={handleCloseUserMenu}>
+            <Typography textAlign="center">{setting}</Typography> 
+          </MenuItem>
+        )
+      case 'Dashboard':
+        return(  
+          <MenuItem key={setting} onClick={handleCloseUserMenu}>
+            <Typography textAlign="center">{setting}</Typography> 
+          </MenuItem>
+        )
+      }
+    }
+)
 
   return (
     <AppBar position="fixed"  sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
@@ -125,11 +163,7 @@ const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              {settingsblock}
             </Menu>
           </Box>
         </Toolbar>

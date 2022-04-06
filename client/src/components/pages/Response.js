@@ -3,17 +3,21 @@ import Typography from '@mui/material/Typography'
 import axios from 'axios';
 import { useParams } from "react-router-dom";
 import { Pie , Bar} from "react-chartjs-2";
+import Button from '@mui/material/Button'
+import Paper from '@mui/material/Paper'
+import Grid from '@mui/material/Grid'
 import 'chart.js/auto';
 
 const Response = () => {
     const [isLoading, setLoading] = useState(true)
     const [surveys, setSurveys] = useState({})
     const { id } = useParams();
+    const [surveyResponses, setSurveyResponses] = useState({})
 
     const styles = {
         pieContainer: {
-          width: "20%",
-          height: "20%",
+          width: "65%",
+          height: "65%",
           display:'inline-block'
         }
     }
@@ -36,8 +40,44 @@ const Response = () => {
         }
     }
 
-    let questionMap = new Map();
+   
+    let survey = surveys[0];
+    for(let i = 0; i < surveyResponses.length;i++){
+        if(surveyResponses[i].id==id){
+            surveyResponseArray.push(surveyResponses[i])
+        }
 
+        }
+           
+            if(survey.active){
+                return (
+                    <Grid container direction='column' justifyContent='center' alignItems='center' style={{marginTop: 200}}>
+                    <Paper elevation={10} style={{width: 400, padding: 20}}>
+                        <Grid container spacing={4} direction='column'>
+                            <Grid item>
+                            <Typography>This survey is still active. Click the button below to fill it out or come back later to see the results!</Typography>
+                            </Grid>
+                            <Grid item>
+                            <Grid container spacing={2} justifyContent='center'>
+                                <Grid item>
+                                <Button href={`/surveys/${survey.id}`} variant="contained">
+                                        Fill out
+                                </Button>
+                                </Grid>
+                                <Grid item>
+                                <Button href={`/surveys/`} variant="contained" color='secondary'>
+                                    Return to survey viewer
+                                </Button>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        </Grid>
+                    </Paper>
+                    </Grid>
+               )
+            }  
+        
+    let questionMap = new Map();
     surveyResponseArray.map(survey=>{
         survey.questions.map((obj,i)=>{
             if(!questionMap.has(obj.question)){
@@ -95,11 +135,11 @@ const Response = () => {
           let question = textDataArr[0]
           let answerArr = textDataArr[1]
           let answersComponent = answerArr.map(answer=>{
-              return <Typography variant='h5'>{answer}</Typography>
+              return <Typography variant='h6'>{answer}</Typography>
           })
           return (
             <div style={{padding:30}}>
-          <Typography variant='h4'>{question}</Typography>
+          <Typography style={{fontWeight: 800}}variant='h6'>{question}</Typography>
           {answersComponent}
           </div>
           )
@@ -117,7 +157,7 @@ const Response = () => {
 
           return(
             <div style={{padding:30}}>
-               <Typography variant='h4'>{rangeDataArr[0]}</Typography>
+               <Typography variant='h6'>{rangeDataArr[0]}</Typography>
                <div style={styles.pieContainer}>
                <Bar 
                    data={{
@@ -177,8 +217,8 @@ const Response = () => {
         }
          return(
              <div style={{padding:30}}>
-                <Typography variant='h4'>{mcDataArr[0]}</Typography>
-
+                <Typography variant='h6'>{mcDataArr[0]}</Typography>
+                
                 <div style={styles.pieContainer}>
                 <Pie 
                     data={data}
@@ -189,10 +229,39 @@ const Response = () => {
       })
 
     return (
-        <div style={{marginTop:80}}>
-            {piecharts}
-            {textAnswers}
-            {histograms}
+        <div style={{marginTop:80, marginBottom: 30}}>
+            <Grid container spacing={5} justifyContent='center' alignItems='center'>
+                <Grid item>
+                    <Paper elevation={10}  style={{ height: 30,  background: 'rgba(255, 255, 255, 0.85)', width: 400, padding: 20, border: 'solid', borderWidth: '4px', borderColor: "#1a237e"}}>
+                            <Typography style={{fontWeight: 800}}variant='h6'>Survey Responses</Typography>
+                    </Paper>
+                </Grid>
+            </Grid>
+            <Grid container spacing={5} justifyContent='center' alignItems='center'style={{marginTop: 20}}>
+                
+                <Grid item >
+                   
+                    <Paper elevation={10}  style={{ height: 300, overflowY: "scroll",  background: 'rgba(255, 255, 255, 0.85)', width: 400, padding: 20, border: 'solid', borderWidth: '4px', borderColor: "#1a237e"}}>
+                    <Typography style={{fontWeight: 800}}variant='h6'>Multiple Choice Answers</Typography>
+                    {piecharts}
+                    </Paper>
+                </Grid>
+                <Grid item >
+                 
+                    <Paper elevation={10} style={{ overflowY: "scroll", height: 300,  background: 'rgba(255, 255, 255, 0.85)', width: 400, padding: 20, border: 'solid', borderWidth: '4px', borderColor: "#1a237e"}}>
+                    <Typography style={{fontWeight: 800}}variant='h6'>Number Range Answers</Typography>
+                    {histograms}
+                    </Paper>
+                </Grid>
+                <Grid item >
+                 
+                    <Paper elevation={13} style={{ height: 300, overflow: "scroll", background: 'rgba(255, 255, 255, 0.85)', width: 400, padding: 20, border: 'solid', borderWidth: '4px', borderColor: "#1a237e"}}>
+                    <Typography style={{fontWeight: 800}}variant='h6'>Text Answers</Typography>
+                    {textAnswers}
+                    </Paper>
+                </Grid>
+              
+            </Grid>
         </div>
     );
 };

@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
-import {makeStyles} from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import {makeStyles} from '@mui/styles';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid'
+
 import axios from "axios";
 
 const useStyles = makeStyles(theme => ({
@@ -11,19 +13,14 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: theme.spacing(2),
 
         '& .MuiTextField-root': {
-            margin: theme.spacing(1),
             width: '300px',
-        },
-        '& .MuiButtonBase-root': {
-            margin: theme.spacing(2),
         },
     },
 }));
 
-const Login = ({handleClose}) => {
+const Login = ({handleSnackbarOpen, handleClose}) => {
     const classes = useStyles();
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
@@ -39,35 +36,46 @@ const Login = ({handleClose}) => {
                 console.log("fail to authenticate")
             }
         });
+        handleSnackbarOpen("login")
         handleClose();
     };
 
     return (
-        <form className={classes.root} onSubmit={handleSubmit}>
-            <TextField
-                label="Username"
-                variant="filled"
-                required
-                value={userName}
-                onChange={e => setUserName(e.target.value)}
-            />
-            <TextField
-                label="Password"
-                variant="filled"
-                type="password"
-                required
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-            />
-            <div>
-                <Button variant="contained" onClick={handleClose}>
-                    Cancel
-                </Button>
-                <Button type="submit" variant="contained" color="primary">
-                    Signup
-                </Button>
-            </div>
-        </form>
+            <Grid container direction='column' rowSpacing={3} justifyContent='center' alignItems='center'>
+                <Grid item>
+                    <TextField
+                        label="Username"
+                        variant="filled"
+                        required
+                        value={userName}
+                        onChange={e => setUserName(e.target.value)}
+                    />
+                 </Grid>
+                 <Grid item>
+                    <TextField
+                        label="Password"
+                        variant="filled"
+                        type="password"
+                        required
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        />
+                </Grid>
+                <Grid item>
+                    <Grid container justifyContent='center' alignItems='center' spacing={2}>
+                        <Grid item>
+                            <Button variant="contained" onClick={handleClose}>
+                                Cancel
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button onClick={handleSubmit} variant="contained" color="primary">
+                                Login
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
     );
 };
 

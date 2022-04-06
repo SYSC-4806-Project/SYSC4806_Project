@@ -15,7 +15,7 @@ import RadioGroup from '@mui/material/RadioGroup'
 import Radio from '@mui/material/Radio'
 import Typography from '@mui/material/Typography'
 import FormLabel from '@mui/material/FormLabel'
-
+import Paper from '@mui/material/Paper'
 const SurveyViewer = () => {
       const [surveys, setSurveys] = useState([]);
       const [isLoading, setLoading] = useState(true)
@@ -71,7 +71,8 @@ const SurveyViewer = () => {
               alignItems="center"
             >        
             <Grid item xs={12}>
-              <Grid container spacing={2} justifyContent='center' alignItems='center'>
+              <Paper elevation={10} style={{background: 'rgba(255, 255, 255, 0.90)', border: 'solid', borderWidth: '4px', borderColor: "#1a237e"}}>
+              <Grid container spacing={2} justifyContent='center' alignItems='center' style={{marginTop: 10}}>
                 <Grid item >
                   <TextField onChange={handleSearchChange} label={selectedFilter}/>
                 </Grid>
@@ -93,20 +94,24 @@ const SurveyViewer = () => {
                     </FormControl>
                 </Grid>
               </Grid>
+              </Paper>
             </Grid>
+          
           {surveys.length > 0 ? <>  { surveys.map((elem,i) => (
                 <Grid item xs={4} key={i}>
-                  <Card>
+                  <Card elevation={10} style={{width: "400px"}}>
                     <CardHeader
-                      title={`Survey ${elem.title}`} subheader={`Survey ${elem.id}`}                      
+                      title={`${elem.title}`} subheader={`Survey ${elem.id}`}                      
                     />
                     <CardContent>
-                    <Link to={{pathname:`/surveys/${elem.id}`, query: {elem}}} >
-                        <Button  variant="contained">Fill out this survey</Button>
-                    </Link>
-                    <Link to={{pathname:`/responses/${elem.id}`, query: {elem}}} >
-                        <Button  color="secondary" variant="contained">See responses</Button>
-                    </Link>
+                    <Grid container justifyContent='center' alignItems='center' spacing={2}>
+                      <Grid item>
+                        <Button  href={`/surveys/${elem.id}`} variant="contained">Fill out this survey</Button>
+                      </Grid>
+                      <Grid item>
+                        <Button href={`/responses/${elem.id}`} color="secondary" variant="contained">See responses</Button>
+                      </Grid>
+                    </Grid>
                     </CardContent>
                   </Card>
             </Grid>))}</>

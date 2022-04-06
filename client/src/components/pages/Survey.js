@@ -52,12 +52,12 @@ const Survey = () => {
                     <Grid item>
                     <Grid container spacing={2} justifyContent='center'>
                         <Grid item>
-                        <Button href={`/response/${survey.id}`} variant="contained">
+                        <Button href={`/responses/${survey.id}`} variant="contained">
                                 Results
                         </Button>
                         </Grid>
                         <Grid item>
-                        <Button href={`/surveys/`} variant="contained" color='secondary'>
+                        <Button href={`/surveyviewer/`} variant="contained" color='secondary'>
                             Return to survey viewer
                         </Button>
                         </Grid>

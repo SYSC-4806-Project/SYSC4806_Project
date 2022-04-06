@@ -10,9 +10,10 @@ import 'chart.js/auto';
 
 const Response = () => {
     const [isLoading, setLoading] = useState(true)
+    const [checkingActive, setCheckingActive] = useState(true)
     const [surveys, setSurveys] = useState({})
     const { id } = useParams();
-    const [surveyResponses, setSurveyResponses] = useState({})
+    const [active, setActive] = useState(false)
 
     const styles = {
         pieContainer: {
@@ -29,7 +30,22 @@ const Response = () => {
         });
       }, []);
 
-    if (isLoading) {
+      useEffect(() => {
+        let config = {method: 'get', url: '/search/' + id + "-id"}
+        let reply
+        //call api amd save result to variable
+        axios(config)
+        .then(function (response) {
+            setActive(response.data.status[0].active);
+            setCheckingActive(false);
+        })
+        .catch(function (error) {
+            console.log("error", error);
+        });
+        }, []);
+
+
+    if (isLoading || checkingActive) {
         return <div className="App"  style={{padding:80}}>Loading...</div>;
       }
     
@@ -41,15 +57,8 @@ const Response = () => {
     }
 
    
-    let survey = surveys[0];
-    for(let i = 0; i < surveyResponses.length;i++){
-        if(surveyResponses[i].id==id){
-            surveyResponseArray.push(surveyResponses[i])
-        }
 
-        }
-           
-            if(survey.active){
+            if(active){
                 return (
                     <Grid container direction='column' justifyContent='center' alignItems='center' style={{marginTop: 200}}>
                     <Paper elevation={10} style={{width: 400, padding: 20}}>
@@ -60,12 +69,12 @@ const Response = () => {
                             <Grid item>
                             <Grid container spacing={2} justifyContent='center'>
                                 <Grid item>
-                                <Button href={`/surveys/${survey.id}`} variant="contained">
+                                <Button href={`/surveys/${surveyResponseArray[0].id}`} variant="contained">
                                         Fill out
                                 </Button>
                                 </Grid>
                                 <Grid item>
-                                <Button href={`/surveys/`} variant="contained" color='secondary'>
+                                <Button href={`/surveyviewer/`} variant="contained" color='secondary'>
                                     Return to survey viewer
                                 </Button>
                                 </Grid>

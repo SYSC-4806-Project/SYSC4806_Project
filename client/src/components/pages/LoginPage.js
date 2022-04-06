@@ -18,14 +18,14 @@ const LoginPage = () => {
     const [signupBarOpen, setSignupBarOpen] = useState(false)
     const [loginBarOpen, setLoginBarOpen] = useState(false)
 
-    const handleOpen = (type)=>{
+    const handleOpen = (type, username)=>{
         if(type=="login"){
             setLoginBarOpen(true)
         }
         else if(type=="signup"){
             setSignupBarOpen(true)
         }
-        
+        sessionStorage.setItem('logged_in_user', username)
         document.location.href = '/Home'
     }
     const handleClose = (event, reason) => {

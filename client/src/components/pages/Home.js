@@ -55,7 +55,7 @@ const Home = () => {
                                         Search by title, survey ID or user, and view analytics for public surveys</Typography>
                                 </Grid>
                                 <Grid item>
-                                    <Button href="/surveys" variant="contained">See Surveys</Button>
+                                    <Button href="/surveyviewer" variant="contained">See Surveys</Button>
                                 </Grid>
                             </Grid>
                         </Grid>

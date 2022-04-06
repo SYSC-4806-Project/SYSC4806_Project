@@ -9,7 +9,10 @@ import Radio from '@mui/material/Radio'
 import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
 import axios from 'axios';
+import Paper from '@mui/material/Paper'
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { SettingsApplicationsRounded } from '@material-ui/icons'
 
 const Survey = () => {
     const [response, setResponse] = useState([])
@@ -18,29 +21,58 @@ const Survey = () => {
     const { id } = useParams();
 
     useEffect(() => {
-        axios.get("/surveys").then(response => {
-          setSurveys(response.data.response);
-          setLoading(false);
+        let config = {method: 'get', url: '/search/' + id + "-id"}
+        let reply
+        //call api amd save result to variable
+        axios(config)
+        .then(function (response) {
+            reply = (response.data);
+            setSurveys(reply.status.reverse());
+            setLoading(false);
+        })
+        .catch(function (error) {
+            console.log("error", error);
         });
-      }, []);
+        }, []);
 
     if (isLoading) {
         return <div className="App"  style={{padding:80}}>Loading...</div>;
       }
     
-    let survey = {}
-    for(let i = 0; i < surveys.length;i++){
-        if(surveys[i].id==id){
-            survey = surveys[i]
-        }
-    }
+    let survey = surveys[0];
 
+    if(!survey.active){
+        return (
+            <Grid container direction='column' justifyContent='center' alignItems='center' style={{marginTop: 200}}>
+            <Paper elevation={10} style={{width: 400, padding: 20}}>
+                <Grid container spacing={4} direction='column'>
+                    <Grid item>
+                    <Typography>This survey is no longer active. Please check out the results</Typography>
+                    </Grid>
+                    <Grid item>
+                    <Grid container spacing={2} justifyContent='center'>
+                        <Grid item>
+                        <Button href={`/response/${survey.id}`} variant="contained">
+                                Results
+                        </Button>
+                        </Grid>
+                        <Grid item>
+                        <Button href={`/surveys/`} variant="contained" color='secondary'>
+                            Return to survey viewer
+                        </Button>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                </Grid>
+            </Paper>
+            </Grid>
+        )
+    }
+    
     async function handleSubmitSurvey(){
         let user = sessionStorage.getItem("logged_in_user")
 
         delete survey._id
-        console.log(survey)
-
         survey.questions.map((obj,i)=>{
             obj["response"]= response[i]
             obj["username"] = user

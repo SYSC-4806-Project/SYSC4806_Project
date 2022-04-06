@@ -20,6 +20,8 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import Radio from '@mui/material/Radio'
 import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
+import Paper from '@mui/material/Paper'
+import ConstructionIcon from '@mui/icons-material/Construction';
 
 const SurveyCreator = () => {
     const [textOpen, setTextOpen] = useState(false)
@@ -80,9 +82,10 @@ const SurveyCreator = () => {
         let idNum = Math.floor(Math.random() * 9000)
 
         let user = sessionStorage.getItem("logged_in_user")
-        let surveyObject = {id: idNum, questions: questionsArr, username: user, title: title}
+        let surveyObject = {id: idNum, questions: questionsArr, username: user, title: title, active:true}
 
         await axios.post("/addSurvey", surveyObject)
+        document.location.href="/surveyconfirmation"
     }
 
     let textQuestionComponents = <Typography>No questions added yet. Use the toolbar on the left to add some!</Typography>
@@ -152,69 +155,99 @@ const SurveyCreator = () => {
         })}
 
     return(
-        <div>
-        <Grid container>
-            <Grid item xs={2}>
-                <Drawer variant="permanent" style={{overflow: 'auto'}}>
-                    <List style={{marginTop: 100}}>
-                        <ListItem>
-                            <ListItemText>
-                                Add Question Fields
-                            </ListItemText>
-                        </ListItem>
-                        <Divider/>
-                        <ListItem button onClick={handleTextOpen}>
-                            <ListItemIcon>
-                                <TextFieldsIcon/>
-                            </ListItemIcon>
-                            <ListItemText>
-                                Open Answer
-                            </ListItemText>
-                        </ListItem>
-                        <ListItem button onClick={handleRangeOpen}>
-                            <ListItemIcon >
-                                <NumbersIcon />
-                            </ListItemIcon>
-                            <ListItemText>
-                                Number Range
-                            </ListItemText>
-                        </ListItem>
-                        <ListItem button onClick={handleMultipleOpen}>
-                            <ListItemIcon>
-                                <AbcIcon />
-                            </ListItemIcon>
-                            <ListItemText>
-                                Multiple Choice
-                            </ListItemText>
-                        </ListItem>
-                    </List>
-                </Drawer>
-            </Grid>
-            <Grid item xs={12} style={{ marginTop: 100}}>
-                <Grid container spacing={2} justifyContent='center'>
-                    <Grid item xs={12} style={{marginBottom: 30}}>
-                        <TextField label="title" onChange={handleTitleChange}></TextField>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Grid container spacing={3} justifyContent='center'>
-                            {textQuestionComponents}
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Grid container spacing={3} justifyContent='center'>
-                            {rangeQuestionComponents}
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Grid container spacing={3} justifyContent='center'>
-                            {multipleQuestionComponents}
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={12} style={{marginBottom: 10}}>
-                        <Button onClick={handleCreateSurvey} variant="contained">Create Survey</Button>
+        <>
+        <Grid container spacing={10} style={{marginTop: 20}}>
+            <Grid item xs={12}>
+                <Grid container justifyContent='center'>
+                    <Grid item>
+                        <Paper elevation={10} style={{width: "70vw", padding: 10, background: 'rgba(255, 255, 255, 0.90)', border: 'solid', borderWidth: '4px', borderColor: "#1a237e"}}>
+                          <Grid container alignItems='center' justifyContent='center' spacing={2}>
+                               <Grid item>
+                                <ConstructionIcon style={{marginTop: 12}}fontSize="large" ></ConstructionIcon>
+                                </Grid>
+                                <Grid item>
+                                    <Typography  
+                                    style={{ color: "black", fontWeight: 500, fontFamily: "Segoe UI"}} 
+                                    variant='h3'>
+                                        Survey Builder
+                                    </Typography>
+                                </Grid>
+                           </Grid>
+                        </Paper>
                     </Grid>
                 </Grid>
             </Grid>
+        <Grid item xs={6} sm={4} md={3} lg={3} xl={3} style={{marginTop: 20,  marginBottom: 50}}>
+           <Paper elevation={10} style={{width: " 100%", marginLeft: '20px'}}>
+                        <List>
+                            <ListItem>
+                                <ListItemText>
+                                    Add Question Fields
+                                </ListItemText>
+                            </ListItem>
+                        
+                            <Divider/>
+            
+                            <ListItem button onClick={handleTextOpen}>
+                                <ListItemIcon>
+                                    <TextFieldsIcon/>
+                                </ListItemIcon>
+                                <ListItemText>
+                                    Open Answer
+                                </ListItemText>
+                            </ListItem>
+                     
+                            <ListItem button onClick={handleRangeOpen}>
+                                <ListItemIcon >
+                                    <NumbersIcon />
+                                </ListItemIcon>
+                                <ListItemText>
+                                    Number Range
+                                </ListItemText>
+                            </ListItem>
+                            <ListItem button onClick={handleMultipleOpen}>
+                                <ListItemIcon>
+                                    <AbcIcon />
+                                </ListItemIcon>
+                                <ListItemText>
+                                    Multiple Choice
+                                </ListItemText>
+                            </ListItem>
+                        </List>
+                </Paper>
+            </Grid>
+            <Grid item xs={8} md={8} lg={8} xl={8} style={{marginTop: 30, marginBottom: 30}}>
+                <Grid container justifyContent='center'>
+                    <Grid item>
+                        <Paper elevation={10}>
+                            <Grid container spacing={2} style={{ marginLeft: '20px'}} justifyContent='center'>
+                                    <Grid item xs={12} style={{marginBottom: 30}}>
+                                        <TextField label="Survey Title" onChange={handleTitleChange}></TextField>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Grid container spacing={3} justifyContent='center'>
+                                            {textQuestionComponents}
+                                        </Grid>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Grid container spacing={3} justifyContent='center'>
+                                            {rangeQuestionComponents}
+                                        </Grid>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Grid container spacing={3} justifyContent='center'>
+                                            {multipleQuestionComponents}
+                                        </Grid>
+                                    </Grid>
+                                    <Grid item xs={12} style={{marginBottom: 10}}>
+                                        <Button onClick={handleCreateSurvey} variant="contained">Create Survey</Button>
+                                    </Grid>
+                            </Grid>
+                        </Paper>
+                    </Grid>
+                </Grid>
+            </Grid>
+     
         </Grid>
         <AddQuestionDialog 
             open={textOpen} 
@@ -234,7 +267,7 @@ const SurveyCreator = () => {
             handleClose={handleMultipleClose} 
             type={"multiple"}>
         </AddQuestionDialog>
-    </div>
+        </>
     )
 }
 export default SurveyCreator

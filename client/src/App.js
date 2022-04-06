@@ -3,7 +3,7 @@ import './App.css';
 import CustomNavbar from "./components/Navbar/Navbar"
 import MainRouter from "./components/MainRouter"
 import { ContentPasteSearchOutlined } from '@mui/icons-material';
-
+import Background from './components/media/survey_background1.png'
 
 function App() {
   const [data, setData] = useState(null);
@@ -29,8 +29,13 @@ function App() {
   )
   return (
     <div className="App">
+      <div style={{  overflowY: 'scroll',
+            overflowX: 'hidden', 
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',  height: '100vh', backgroundImage: `url(${Background})`}}>
       < CustomNavbar />
       < MainRouter />
+      </div>
     </div>
   );
 }

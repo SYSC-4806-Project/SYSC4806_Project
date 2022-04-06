@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,13 +11,63 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import Link from '@mui/material/Link'
 
-const pages = ['Products', 'Pricing', 'Surveys'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
+import TextField from '@mui/material/TextField'
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import axios from 'axios';
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [userExists, setUserExists] = useState(false);
+  const [open, setOpen] = useState(false);
+  const pages = ['Products', 'Pricing', 'Surveys'];
+  const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setUserExists(false);
+  };
+
+  const handleSearchChange = (event) => {
+      setSearchTerm(event.target.value);
+}
+
+const Search = () => {
+  //configure endpoint info
+  let config = {method: 'get', url: '/userexist/' + searchTerm}
+  let reply
+  //call api amd save result to variable
+  axios(config)
+  .then(function (response) {
+      if(response.data.response==="Approved"){
+          setUserExists(true); 
+      }
+      else{
+          setUserExists(false); 
+      }
+
+  })
+  .catch(function (error) {
+      console.log("error", error);
+  });
+}
+
+  useEffect(()=>{
+    if(userExists){
+        handleClickOpen();
+    }
+  },[userExists]
+  )
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -33,20 +83,62 @@ const ResponsiveAppBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const handleProfileClick = () => {
+    document.location.href = `/profiles/${user}`
+  }
+
+  let user = sessionStorage.getItem("logged_in_user")
+
+
+  let settingsblock = settings.map((setting) => {
+    switch(setting){
+      case 'Profile':
+        if(user!=null){
+          console.log("Pressed")
+          return(
+            <MenuItem href={{pathname:`/profiles/${user}`}}  key={setting} onClick={handleProfileClick}>
+              <Typography textAlign="center">{setting}</Typography> 
+            </MenuItem>
+        )
+        }
+      case 'Account':
+        return(  
+          <MenuItem key={setting} onClick={handleCloseUserMenu}>
+            <Typography textAlign="center">{setting}</Typography> 
+          </MenuItem>
+        )
+      case 'Logout':
+        return(  
+          <MenuItem key={setting} onClick={handleCloseUserMenu}>
+            <Typography textAlign="center">{setting}</Typography> 
+          </MenuItem>
+        )
+      case 'Dashboard':
+        return(  
+          <MenuItem key={setting} onClick={handleCloseUserMenu}>
+            <Typography textAlign="center">{setting}</Typography> 
+          </MenuItem>
+        )
+      }
+    }
+)
 
   return (
-    <AppBar position="fixed"  sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
+    <>
+    <AppBar style={{color: 'white'}} position="fixed"  sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+      <Container maxWidth="xl"  style={{backgroundColor: "white"}}> {/**#1a237e */}
+        <Toolbar disableGutters style={{color: 'black'}}>
+          <Link underline="none" href="/home">
           <Typography
             variant="h6"
             noWrap
             component="div"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+        
           >
             Mini Survey Monkey
           </Typography>
-
+          </Link>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -54,11 +146,11 @@ const ResponsiveAppBar = () => {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
             >
               <MenuIcon />
             </IconButton>
             <Menu
+              style={{color: 'black'}}
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
@@ -77,8 +169,8 @@ const ResponsiveAppBar = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem style={{color: 'black'}} key={page} onClick={handleCloseNavMenu}>
+                  <Typography style={{fontColor: 'black'}} textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -96,14 +188,17 @@ const ResponsiveAppBar = () => {
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{  color: 'black' , display: 'block' }}
               >
                 {page}
               </Button>
             ))}
+           
           </Box>
-
+          {sessionStorage.getItem("logged_in_user") ? 
           <Box sx={{ flexGrow: 0 }}>
+            <TextField  onChange={handleSearchChange} label="search a profile"/>
+            <Button  onClick={Search} variant="contained" style={{marginTop: 10, marginLeft: 5, marginRight: 25}}>Search</Button>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
@@ -125,16 +220,38 @@ const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+                
+               {settingsblock}
             </Menu>
-          </Box>
+          </Box> : <></>}
         </Toolbar>
       </Container>
     </AppBar>
+    <Dialog
+    open={open}
+    onClose={handleClose}
+    aria-labelledby="alert-dialog-title"
+    aria-describedby="alert-dialog-description"
+    >
+    <DialogTitle id="alert-dialog-title">
+        {"Found a matching user!"}
+    </DialogTitle>
+    <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+            Visit their profile?
+        </DialogContentText>
+    </DialogContent>
+    <DialogActions>
+   <Button href={`/profiles/${searchTerm}`} onClick={handleClose} autoFocus>
+        Visit
+        </Button>
+   
+    <Button onClick={handleClose} autoFocus>
+        Exit
+    </Button>
+    </DialogActions>
+    </Dialog>
+    </>
   );
 };
 export default ResponsiveAppBar;

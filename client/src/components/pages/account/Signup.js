@@ -1,7 +1,12 @@
 import React, {useState} from 'react';
-import {makeStyles} from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import {makeStyles} from '@mui/styles';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid'
+import Alert from '@mui/material/Alert'
+import Snackbar from '@mui/material/Snackbar'
+
+
 import axios from "axios";
 
 const useStyles = makeStyles(theme => ({
@@ -11,67 +16,81 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: theme.spacing(2),
 
         '& .MuiTextField-root': {
-            margin: theme.spacing(1),
             width: '300px',
         },
-        '& .MuiButtonBase-root': {
-            margin: theme.spacing(2),
-        },
+    
     },
 }));
 
-const Signup = ({handleClose}) => {
+const Signup = ({handleSnackbarOpen, handleClose}) => {
     const classes = useStyles();
     const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+
     const handleSubmit = e => {
         e.preventDefault();
+     
         console.log(userName, email, password);
   
         let accountInfo = {username: userName, email: email, password: password}
         axios.post("/addUser", accountInfo)
+       
+        handleSnackbarOpen("signup")
         handleClose();
     };
 
     return (
-        <form className={classes.root} onSubmit={handleSubmit}>
-            <TextField
-                label="Username"
-                variant="filled"
-                required
-                value={userName}
-                onChange={e => setUserName(e.target.value)}
-            />
-            <TextField
-                label="Email"
-                variant="filled"
-                type="email"
-                required
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-            />
-            <TextField
-                label="Password"
-                variant="filled"
-                type="password"
-                required
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-            />
-            <div>
-                <Button variant="contained" onClick={handleClose}>
-                    Cancel
-                </Button>
-                <Button type="submit" variant="contained" color="primary">
-                    Signup
-                </Button>
-            </div>
-        </form>
+        <>
+        <Grid container direction="column" rowSpacing={3}  alignItems='center' justifyContent='center'>
+            <Grid item>
+                <TextField
+                    label="Username"
+                    variant="filled"
+                    required
+                    value={userName}
+                    onChange={e => setUserName(e.target.value)}
+                />
+            </Grid>
+            <Grid item>
+                <TextField
+                    label="Email"
+                    variant="filled"
+                    type="email"
+                    required
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                />
+            </Grid>
+            <Grid item>
+                <TextField
+                    label="Password"
+                    variant="filled"
+                    type="password"
+                    required
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                />
+            </Grid>
+            <Grid item>
+                <Grid container spacing={2} direction='row' justifyContent='center' alignItems='center'>
+                    <Grid item>
+                        <Button variant="contained" onClick={handleClose}>
+                            Cancel
+                        </Button>
+                    </Grid>
+                    <Grid item>
+                        <Button onClick={handleSubmit} type="submit" variant="contained" color="primary">
+                            Sign Up
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+        </>
     );
 };
 

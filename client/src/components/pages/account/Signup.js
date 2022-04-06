@@ -39,7 +39,7 @@ const Signup = ({handleSnackbarOpen, handleClose}) => {
         let accountInfo = {username: userName, email: email, password: password}
         axios.post("/addUser", accountInfo)
        
-        handleSnackbarOpen("signup")
+        handleSnackbarOpen("signup", userName)
         handleClose();
     };
 

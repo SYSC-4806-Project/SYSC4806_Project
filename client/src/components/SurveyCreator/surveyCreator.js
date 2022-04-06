@@ -85,7 +85,7 @@ const SurveyCreator = () => {
         let surveyObject = {id: idNum, questions: questionsArr, username: user, title: title, active:true}
 
         await axios.post("/addSurvey", surveyObject)
-        document.location.href="/surveyconfirmation"
+        document.location.href="/surveyconfirmation-created"
     }
 
     let textQuestionComponents = <Typography>No questions added yet. Use the toolbar on the left to add some!</Typography>

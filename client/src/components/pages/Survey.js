@@ -79,6 +79,7 @@ const Survey = () => {
         })
 
         const res = await axios.post("/addResponses", survey)
+        document.location.href="/surveyconfirmation-completed"
     }
     
     let questionComponents= survey.questions.map((obj,i)=>{
@@ -152,12 +153,14 @@ const Survey = () => {
 
     return (
 
-        <div style={{marginTop:80}}>
-            
-            {questionComponents}    
-            <Button onClick={handleSubmitSurvey} variant="contained">Submit Answers</Button>
-            
-        </div>
+        <Grid container justifyContent='center' alignItems='center' style={{marginTop:80}}>
+            <Grid item>
+                <Paper elevation={10} style={{width: 600, padding: 20, background: 'rgba(255, 255, 255, 0.85)', border: 'solid', borderWidth: '4px', borderColor: "#1a237e"}}>
+                {questionComponents}    
+                <Button onClick={handleSubmitSurvey} variant="contained">Submit Answers</Button>
+                </Paper>
+            </Grid>
+        </Grid>
     );
 };
 

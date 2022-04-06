@@ -22,7 +22,8 @@ const MainRouter = () => {
       <Route path='/addsurvey' exact element={<SurveyCreator />}></Route>
       <Route path='/responses/:id' exact element={<Response/>}></Route>
       <Route path='/profiles/:username' exact element={<Profile/>}></Route>
-      <Route path='/surveyconfirmation' exact element={<SurveyConfirmation />}></Route>
+      <Route path='/surveyconfirmation-created' exact element={<SurveyConfirmation type='created'/>}></Route>
+      <Route path='/surveyconfirmation-completed' exact element={<SurveyConfirmation type='completed'/>}></Route>
     </Routes>
 
   );

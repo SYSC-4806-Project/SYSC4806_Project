@@ -17,7 +17,7 @@ const MainRouter = () => {
     <Routes>
       <Route path='/' exact element={<LoginPage/>}></Route>
       <Route path='/Home' exact element={<Home/>}></Route>
-      <Route path='/surveys' exact element={<SurveyViewer/>}></Route>
+      <Route path='/surveyviewer' exact element={<SurveyViewer/>}></Route>
       <Route path='/surveys/:id' exact element={<Survey/>}></Route>
       <Route path='/addsurvey' exact element={<SurveyCreator />}></Route>
       <Route path='/responses/:id' exact element={<Response/>}></Route>

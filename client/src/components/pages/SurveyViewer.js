@@ -24,7 +24,8 @@ const SurveyViewer = () => {
       const [searchTerm, setSearchTerm] = useState("")
 
       useEffect(() => {
-          axios.get("/surveys").then(response => {
+          let user = sessionStorage.getItem("logged_in_user") 
+          axios.get("/surveys/" + user).then(response => {
             setSurveys(response.data.response.reverse());
             setLoading(false);
           });

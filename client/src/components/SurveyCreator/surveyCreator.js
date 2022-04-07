@@ -22,6 +22,7 @@ import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
 import Paper from '@mui/material/Paper'
 import ConstructionIcon from '@mui/icons-material/Construction';
+import Checkbox from '@mui/material/Checkbox';
 
 const SurveyCreator = () => {
     const [textOpen, setTextOpen] = useState(false)
@@ -31,6 +32,8 @@ const SurveyCreator = () => {
     const [rangeQuestions, setRangeQuestions] = useState([])
     const [multipleQuestions, setMultipleQuestions] = useState([])
     const [title, setTitle] = useState("")
+    const [priv, setPriv] = useState(true)
+
 
     let axios = require('axios')
 
@@ -73,6 +76,11 @@ const SurveyCreator = () => {
         }
     }
 
+    function handleChange() { 
+        let temp = !priv
+        setPriv(temp)
+    } 
+
     async function handleCreateSurvey(){
         let questionsArr = []
         textQuestions.forEach(element => questionsArr.push(element))
@@ -80,9 +88,8 @@ const SurveyCreator = () => {
         multipleQuestions.forEach(element => questionsArr.push(element))
 
         let idNum = Math.floor(Math.random() * 9000)
-
         let user = sessionStorage.getItem("logged_in_user")
-        let surveyObject = {id: idNum, questions: questionsArr, username: user, title: title, active:true}
+        let surveyObject = {id: idNum, questions: questionsArr, username: user, title: title, active:true, private: priv}
 
         await axios.post("/addSurvey", surveyObject)
         document.location.href="/surveyconfirmation-created"
@@ -240,6 +247,7 @@ const SurveyCreator = () => {
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12} style={{marginBottom: 10}}>
+                                        <FormControlLabel control={<Checkbox defaultChecked onChange={handleChange}/>} label="Private" />
                                         <Button onClick={handleCreateSurvey} variant="contained">Create Survey</Button>
                                     </Grid>
                             </Grid>

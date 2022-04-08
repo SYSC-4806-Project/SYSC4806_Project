@@ -26,7 +26,7 @@ const ResponsiveAppBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [userExists, setUserExists] = useState(false);
   const [open, setOpen] = useState(false);
-  const pages = ['Products', 'Pricing', 'Surveys'];
+  const pages = ['About', 'Pricing', 'Surveys']
   const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
   const handleClickOpen = () => {
@@ -93,6 +93,7 @@ const Search = () => {
   const handleDashboard = () => {
     document.location.href = `/Home`
   }
+  
   let user = sessionStorage.getItem("logged_in_user")
 
 
@@ -125,7 +126,7 @@ const Search = () => {
 
   return (
     <>
-    <AppBar style={{color: 'white'}} position="fixed"  sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+    <AppBar style={{color: 'white', backgroundColor: 'white'}} position="fixed"  sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
       <Container maxWidth="xl"  style={{backgroundColor: "white"}}> {/**#1a237e */}
         <Toolbar disableGutters style={{color: 'black'}}>
           <Link underline="none" href="/home">
@@ -168,11 +169,16 @@ const Search = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem style={{color: 'black'}} key={page} onClick={handleCloseNavMenu}>
-                  <Typography style={{fontColor: 'black'}} textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
+                  <MenuItem  style={{color: 'black'}} onClick={()=>{document.location.href = "/pricing"}}>
+                    <Typography style={{fontColor: 'black'}} textAlign="center">Pricing</Typography>
+                  </MenuItem>
+                  <MenuItem  style={{color: 'black'}}  onClick={()=>{document.location.href = "/about"}}>
+                    <Typography style={{fontColor: 'black'}} textAlign="center">About</Typography>
+                  </MenuItem>
+                  <MenuItem  style={{color: 'black'}} onClick={()=>{document.location.href = "/surveyViewer"}}>
+                    <Typography style={{fontColor: 'black'}} textAlign="center">Surveys</Typography>
+                  </MenuItem>
+              ))
             </Menu>
           </Box>
           <Typography
@@ -184,15 +190,27 @@ const Search = () => {
             Mini Survey Monkey
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+          {sessionStorage.getItem("logged_in_user") ? (
+            pages.map((page) => (
+              page != 'Surveys' ? (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
                 sx={{  color: 'black' , display: 'block' }}
+                href={`/${page}`}
               >
                 {page}
-              </Button>
-            ))}
+              </Button>): (
+                 <Button
+                 key={page}
+                 onClick={handleCloseNavMenu}
+                 sx={{  color: 'black' , display: 'block' }}
+                 href={`/surveyViewer`}
+               >
+                 {page}
+               </Button>
+              )
+            ))):(<></>)}
            
           </Box>
           {sessionStorage.getItem("logged_in_user") ? 

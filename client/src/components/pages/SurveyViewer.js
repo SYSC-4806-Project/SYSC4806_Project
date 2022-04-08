@@ -107,7 +107,7 @@ const SurveyViewer = () => {
                     <CardContent>
                     <Grid container justifyContent='center' alignItems='center' spacing={2}>
                       <Grid item>
-                        <Button  href={`/surveys/${elem.id}`} variant="contained">Fill out this survey</Button>
+                        <Button  href={`/complete/${elem.id}`} variant="contained">Fill out this survey</Button>
                       </Grid>
                       <Grid item>
                         <Button href={`/responses/${elem.id}`} color="secondary" variant="contained">See responses</Button>

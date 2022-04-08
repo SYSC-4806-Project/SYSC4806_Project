@@ -41,7 +41,11 @@ const ResponsiveAppBar = () => {
   const handleSearchChange = (event) => {
       setSearchTerm(event.target.value);
 }
-
+const handleLogout = (event) => 
+{
+  sessionStorage.removeItem("logged_in_user")
+  document.location.href = "/"
+}
 const Search = () => {
   //configure endpoint info
   let config = {method: 'get', url: '/userexist/' + searchTerm}
@@ -96,6 +100,10 @@ const Search = () => {
     document.location.href = `/pricing/`
   }
 
+  const handleDashboard = () => {
+    document.location.href = `/Home`
+  }
+
   let user = sessionStorage.getItem("logged_in_user")
 
 
@@ -110,21 +118,15 @@ const Search = () => {
             </MenuItem>
         )
         }
-      case 'Account':
-        return(  
-          <MenuItem key={setting} onClick={handleCloseUserMenu}>
-            <Typography textAlign="center">{setting}</Typography> 
-          </MenuItem>
-        )
       case 'Logout':
         return(  
-          <MenuItem key={setting} onClick={handleCloseUserMenu}>
+          <MenuItem key={setting} onClick={handleLogout}>
             <Typography textAlign="center">{setting}</Typography> 
           </MenuItem>
         )
       case 'Dashboard':
         return(  
-          <MenuItem key={setting} onClick={handleCloseUserMenu}>
+          <MenuItem key={setting} onClick={handleDashboard}>
             <Typography textAlign="center">{setting}</Typography> 
           </MenuItem>
         )

@@ -13,7 +13,7 @@ const Response = () => {
     const [checkingActive, setCheckingActive] = useState(true)
     const [surveys, setSurveys] = useState({})
     const { id } = useParams();
-    const [active, setActive] = useState(false)
+    const [survey, setSurvey] = useState({})
 
     const styles = {
         pieContainer: {
@@ -36,7 +36,8 @@ const Response = () => {
         //call api amd save result to variable
         axios(config)
         .then(function (response) {
-            setActive(response.data.status[0].active);
+            console.log(response.data.status[0])
+            setSurvey(response.data.status[0])
             setCheckingActive(false);
         })
         .catch(function (error) {
@@ -58,7 +59,7 @@ const Response = () => {
 
    
 
-            if(active){
+            if(survey.active){
                 return (
                     <Grid container direction='column' justifyContent='center' alignItems='center' style={{marginTop: 200}}>
                     <Paper elevation={10} style={{width: 400, padding: 20}}>
@@ -69,7 +70,7 @@ const Response = () => {
                             <Grid item>
                             <Grid container spacing={2} justifyContent='center'>
                                 <Grid item>
-                                <Button href={`/surveys/${surveyResponseArray[0].id}`} variant="contained">
+                                <Button href={`/surveys/${survey.id}`} variant="contained">
                                         Fill out
                                 </Button>
                                 </Grid>

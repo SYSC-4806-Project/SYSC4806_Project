@@ -26,7 +26,7 @@ const ResponsiveAppBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [userExists, setUserExists] = useState(false);
   const [open, setOpen] = useState(false);
-  const pages = ['About us', 'Pricing', 'Surveys'];
+  const pages = ['Products', 'Pricing', 'Surveys'];
   const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
   const handleClickOpen = () => {
@@ -90,20 +90,9 @@ const Search = () => {
   const handleProfileClick = () => {
     document.location.href = `/profiles/${user}`
   }
-  const handleSurveyClick = () => {
-    document.location.href = `/surveyviewer/`
-  }
-  const handleAboutClick = () => {
-    document.location.href = `/about/`
-  }
-  const handlePricingClick = () => {
-    document.location.href = `/pricing/`
-  }
-
   const handleDashboard = () => {
     document.location.href = `/Home`
   }
-
   let user = sessionStorage.getItem("logged_in_user")
 
 
@@ -132,29 +121,6 @@ const Search = () => {
         )
       }
     }
-)
-let pagesblock = pages.map((pages) => {
-  switch(pages){
-    case 'About us':
-      return(  
-        <MenuItem href={{pathname:`/about`}} key={pages} onClick={handleAboutClick}>
-          <Typography textAlign="center">{pages}</Typography> 
-        </MenuItem>
-      )
-    case 'Pricing':
-      return(  
-        <MenuItem href={{pathname:`/pricing`}} key={pages} onClick={handlePricingClick}>
-          <Typography textAlign="center">{pages}</Typography> 
-        </MenuItem>
-      )
-    case 'Surveys':
-      return(  
-        <MenuItem href={{pathname:`/surveyviewer`}} key={pages} onClick={handleSurveyClick}>
-          <Typography textAlign="center">{pages}</Typography> 
-        </MenuItem>
-      )
-    }
-  }
 )
 
   return (
@@ -202,7 +168,11 @@ let pagesblock = pages.map((pages) => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              
+              {pages.map((page) => (
+                <MenuItem style={{color: 'black'}} key={page} onClick={handleCloseNavMenu}>
+                  <Typography style={{fontColor: 'black'}} textAlign="center">{page}</Typography>
+                </MenuItem>
+              ))}
             </Menu>
           </Box>
           <Typography
@@ -214,14 +184,15 @@ let pagesblock = pages.map((pages) => {
             Mini Survey Monkey
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            
-
+            {pages.map((page) => (
               <Button
-                
+                key={page}
+                onClick={handleCloseNavMenu}
+                sx={{  color: 'black' , display: 'block' }}
               >
-                {pagesblock}
+                {page}
               </Button>
-            
+            ))}
            
           </Box>
           {sessionStorage.getItem("logged_in_user") ? 

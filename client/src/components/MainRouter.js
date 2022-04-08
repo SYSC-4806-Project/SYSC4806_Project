@@ -4,8 +4,6 @@ import Home from './pages/Home';
 import SurveyViewer from './pages/SurveyViewer';
 import Survey from './pages/Survey';
 import Response from './pages/Response';
-import About from './pages/About';
-import Pricing from './pages/Pricing';
 import SurveyCreator from './SurveyCreator/surveyCreator'
 import SurveyConfirmation from './SurveyCreator/surveyConfirmation'
 
@@ -20,8 +18,6 @@ const MainRouter = () => {
       <Route path='/' exact element={<LoginPage/>}></Route>
       <Route path='/Home' exact element={<Home/>}></Route>
       <Route path='/surveyviewer' exact element={<SurveyViewer/>}></Route>
-      <Route path='/pricing' exact element={<Pricing/>}></Route>
-      <Route path='/about' exact element={<About/>}></Route>
       <Route path='/surveys/:id' exact element={<Survey/>}></Route>
       <Route path='/addsurvey' exact element={<SurveyCreator />}></Route>
       <Route path='/responses/:id' exact element={<Response/>}></Route>

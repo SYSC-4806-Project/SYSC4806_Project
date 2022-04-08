@@ -37,26 +37,55 @@ const AddQuestionDialog = (props) => {
     }
 
     function handleAddAnswer(){
-        let tempAnswers = answers 
-        tempAnswers.push(answer)
-        setAnswers(tempAnswers)
-        setAnswer("")
+        if(answer.length === 0) {
+            alert("answer should not be empty")
+        } else {
+            let tempAnswers = answers
+            tempAnswers.push(answer)
+            setAnswers(tempAnswers)
+            setAnswer("")
+        }
+
     }
 
     function handleAdd(){
         let questionObject = {}
 
         if(type === 'text'){
-            questionObject = {question: question, type: 1}
+            if(question.length === 0) {
+                alert("The question should not be empty")
+            } else {
+                questionObject = {question: question, type: 1}
+                handleSubmit(type, questionObject)
+                handlePreClose()
+            }
         }
+
         else if(type === 'range'){
-            questionObject = {question: question, min: min, max: max, type: 3}
+            console.log(Object.keys((min)).length)
+            if(question.length === 0 || Object.keys((min)).length === 0 || Object.keys((max)).length === 0) {
+                alert("All the textfield should not be empty")
+            } else if(!new RegExp(/^[0-9]+$/).test(min) && new RegExp(/^[0-9]+$/).test(max)) {
+                alert("The min and max should only contains digits")
+            } else if((max - min) < 1) {
+                alert("Max should larger than min")
+            }
+            else {
+                questionObject = {question: question, min: min, max: max, type: 3}
+                handleSubmit(type, questionObject)
+                handlePreClose()
+            }
         }
         else if(type === 'multiple'){
-            questionObject= {question: question, answers: answers, type: 2}
+            if(question.length === 0 ) {
+                alert("Question should not be empty")
+            } else {
+                questionObject= {question: question, answers: answers, type: 2}
+                handleSubmit(type, questionObject)
+                handlePreClose()
+            }
         }
-        handleSubmit(type, questionObject)
-        handlePreClose()
+
     }
     function handlePreClose(){
         setAnswers([])
